@@ -253,7 +253,7 @@ SMODS.Joker { --Banland
             end
         end
     end,
-    update = function(self,card,dt)
+    update = function(self,card,context)
         card.ability.extra.willgive = 0
         if G.STAGE == G.STAGES.RUN then
             local amount = 0
@@ -294,7 +294,7 @@ SMODS.Joker { --Egg Hunt
             end
         end
     end,
-    calculate = function(self,card,context)
+    update = function(self,card,context)
         card.ability.extra.active = 'Inactive'
         if G.STAGE == G.STAGES.RUN then
             local uniquecards = {}
@@ -404,7 +404,7 @@ SMODS.Joker {  --Bacon Hair
             }
         end
     end,
-    update = function(self,card,dt)
+    update = function(self,card,context)
         card.ability.extra.chips = card.ability.extra.freechips
         if G.STAGE == G.STAGES.RUN then
             local amount = 0
@@ -562,7 +562,7 @@ SMODS.Consumable { --Sword
     can_use = function(self,card)
         if card.ability.extra.currentuses > 0 then
             if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK then
-                if card.ability.consumeable.mod_num >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then
+                if card.ability.consumable.mod_num >= #G.hand.highlighted + (self.area == G.hand and -1 or 0) and #G.hand.highlighted + (self.area == G.hand and -1 or 0) >= 1 then
                     return true
                 end
             end
@@ -1152,7 +1152,7 @@ SMODS.Consumable { --Ban Hammer
     end,
     can_use = function(self,card)
         if card.ability.extra.currentuses > 0 then
-            if card.area ~= G.shop_jokers > 0 then
+            if card.area ~= G.shop_jokers then
                 if #card.ability.extra.eligible_editionless_jokers > 0 and not G.jokers.cards[1].ability.eternal then 
                     return true
                 end
@@ -1169,7 +1169,7 @@ SMODS.Consumable { --Ban Hammer
             return true end }))
         card.ability.extra.currentuses = card.ability.extra.currentuses - 1
     end,
-    update = function(self,card,dt)
+    update = function(self,card,context)
         card.ability.extra.eligible_editionless_jokers = EMPTY(card.ability.extra.eligible_editionless_jokers)
         if G.STAGE == G.STAGES.RUN then
             for i, v in ipairs(G.jokers.cards) do
